@@ -14,11 +14,11 @@ cache:
 
 install:
   - travis_retry composer self-update && composer --version
-  - travis_retry composer global require "fxp/composer-asset-plugin:~1.1.0"
+  - travis_retry composer global require "fxp/composer-asset-plugin:~1.2.0"
   - travis_retry composer update --dev --prefer-dist --no-interaction
 # setup application:
   - |
-    ./init --env=Development
+    php init --env=Development --overwrite=n
     sed -i s/root/travis/ common/config/main-local.php
     sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'/" frontend/config/main.php
     sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'/" backend/config/main.php

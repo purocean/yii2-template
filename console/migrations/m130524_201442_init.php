@@ -28,21 +28,21 @@ class m130524_201442_init extends Migration
         ], $tableOptions);
 
         // migrate rbac tables
-        passthru($_SERVER['PHP_SELF']
-            . ' migrate/up --migrationPath=@yii/rbac/migrations --interactive=0');
+        passthru('php "' . $_SERVER['PHP_SELF']
+            . '" migrate/up --migrationPath=@yii/rbac/migrations --interactive=0');
 
         // seed rbac
-        passthru($_SERVER['PHP_SELF'] . ' rbac/add-role suadmin');
-        passthru($_SERVER['PHP_SELF'] . ' rbac/add-role admin');
-        passthru($_SERVER['PHP_SELF'] . ' rbac/add-role user');
-        passthru($_SERVER['PHP_SELF'] . ' rbac/add-permission "/admin/*"');
-        passthru($_SERVER['PHP_SELF'] . ' rbac/add-permission "/dubug/*"');
-        passthru($_SERVER['PHP_SELF'] . ' rbac/add-permission "/gii/*"');
-        passthru($_SERVER['PHP_SELF'] . ' rbac/add-child suadmin "/admin/*"');
-        passthru($_SERVER['PHP_SELF'] . ' rbac/add-child suadmin "/dubug/*"');
-        passthru($_SERVER['PHP_SELF'] . ' rbac/add-child suadmin "/gii/*"');
-        passthru($_SERVER['PHP_SELF']
-            . ' rbac/add-user suadmin ' . substr(md5(time()), 0, 12)
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-role suadmin');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-role admin');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-role user');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-permission "/admin/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-permission "/dubug/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-permission "/gii/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-child suadmin "/admin/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-child suadmin "/dubug/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-child suadmin "/gii/*"');
+        passthru('php "' . $_SERVER['PHP_SELF']
+            . '" rbac/add-user suadmin ' . substr(md5(time()), 0, 12)
             . ' suadmin admin@admin.admin');
     }
 

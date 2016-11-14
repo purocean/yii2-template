@@ -48,6 +48,16 @@ class m130524_201442_init extends Migration
 
     public function down()
     {
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-child suadmin "/gii/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-child suadmin "/dubug/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-child suadmin "/admin/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-permission "/gii/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-permission "/dubug/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-permission "/admin/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-role user');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-role admin');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-role suadmin');
+
         $this->dropTable('{{%user}}');
     }
 }

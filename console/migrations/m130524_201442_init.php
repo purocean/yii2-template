@@ -36,10 +36,10 @@ class m130524_201442_init extends Migration
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-role admin');
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-role user');
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-permission "/admin/*"');
-        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-permission "/dubug/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-permission "/debug/*"');
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-permission "/gii/*"');
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-child suadmin "/admin/*"');
-        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-child suadmin "/dubug/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-child suadmin "/debug/*"');
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/add-child suadmin "/gii/*"');
         passthru('php "' . $_SERVER['PHP_SELF']
             . '" rbac/add-user suadmin ' . substr(md5(time()), 0, 12)
@@ -49,10 +49,10 @@ class m130524_201442_init extends Migration
     public function down()
     {
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-child suadmin "/gii/*"');
-        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-child suadmin "/dubug/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-child suadmin "/debug/*"');
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-child suadmin "/admin/*"');
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-permission "/gii/*"');
-        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-permission "/dubug/*"');
+        passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-permission "/debug/*"');
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-permission "/admin/*"');
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-role user');
         passthru('php "' . $_SERVER['PHP_SELF'] . '" rbac/remove-role admin');

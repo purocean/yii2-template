@@ -10,10 +10,10 @@ use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 use yii\filters\Cors;
 
-use frontend\components\AjaxData;
+use common\components\AjaxData;
 
-use frontend\models\LoginForm;
-use frontend\models\User;
+use common\models\LoginForm;
+use common\models\User;
 
 class UserController extends ActiveController
 {
@@ -81,7 +81,7 @@ class UserController extends ActiveController
 
         $model = new LoginForm();
         $model->setAttributes($data);
-        if ($model->login()) {
+        if ($model->login(true)) {
             $accessToken = explode('+', $model->user->access_token, 2);
             return AjaxData::build('ok', 'login successed', [
                 'username' => $model->user->username,

@@ -53,10 +53,15 @@ class LoginForm extends Model
      *
      * @return bool whether the user is logged in successfully
      */
-    public function login()
+    public function login($useAccess = false)
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+            if ($useAccess) {
+                $this->user->generateAccessToken($this->rememberMe ? 3600 * 24 * 30 : 2400);
+                return $this->user->save();
+            } else {
+                return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+            }
         } else {
             return false;
         }

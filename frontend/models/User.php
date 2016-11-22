@@ -4,7 +4,7 @@ namespace frontend\models;
 use Yii;
 use Yii\db\Expression;
 
-class User extends common\models\User
+class User extends \common\models\User
 {
     public function fields()
     {

@@ -43,20 +43,7 @@ return [
             'enablePrettyUrl' => true,
             // 'enableStrictParsing' => true,
             'showScriptName' => false,
-            'rules' => [
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'user',
-                    'extraPatterns' => [
-                        'POST login' => 'login',
-                        'OPTIONS login' => 'options', // Browser check cross origin
-                        'GET items' => 'items',
-                        'OPTIONS items' => 'options',
-                        'POST logout' => 'logout',
-                        'OPTIONS logout' => 'options',
-                    ],
-                ],
-            ],
+            'rules' => require(__DIR__ . '\route.php'),
         ],
     ],
     'params' => $params,

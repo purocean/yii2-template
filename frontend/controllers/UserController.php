@@ -13,7 +13,7 @@ use yii\filters\Cors;
 use common\components\AjaxData;
 
 use common\models\LoginForm;
-use common\models\User;
+use frontend\models\User;
 
 class UserController extends ActiveController
 {

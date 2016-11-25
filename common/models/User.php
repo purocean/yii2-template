@@ -78,7 +78,12 @@ class User extends ActiveRecord implements IdentityInterface
 
         if ($user and $user->access_token) {
             $accessToken = explode('+', $user->access_token, 2);
-            if ($accessToken[1] > time()) {
+            $expires = isset($accessToken[1]) ? (int) $accessToken[1] : 0;
+
+            if ($expires > time()) {
+                $user->access_token = $accessToken[0] . '+' . ($expires + 2400);
+                $user->save();
+
                 return $user;
             }
         }
@@ -211,4 +216,20 @@ class User extends ActiveRecord implements IdentityInterface
         $this->access_token = Yii::$app->security->generateRandomString(64) . '+' . (time() + $expires);
     }
 
+    public function getAccessToken()
+    {
+        if ($this->access_token) {
+            $accessToken = explode('+', $this->access_token, 2);
+            $expires = isset($accessToken[1]) ? (int) $accessToken[1] : 0;
+
+            if ($expires > time()) {
+                $this->access_token = $accessToken[0] . '+' . ($expires + 2400);
+                $this->save();
+
+                return $accessToken[0];
+            }
+        }
+
+        return null;
+    }
 }

@@ -1,0 +1,42 @@
+﻿
+.err div {
+    margin: 0;
+    padding: 0;
+}
+.err #fulls {
+    position:  absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: url("../images/error_bg.jpg") repeat-x scroll 0 0 #67ACE4;
+}
+.err #container {
+    margin: 0 auto;
+    padding-top: 50px;
+    text-align: center;
+    width: 560px;
+}
+.err #container img {
+    border: medium none;
+    margin-bottom: 50px;
+}
+.err #container .error {
+    height: 200px;
+    position: relative;
+}
+.err #container .error img {
+    bottom: -50px;
+    position: absolute;
+    right: -50px;
+}
+.err #container .msg {
+    margin-bottom: 65px;
+}
+.err #cloud {
+    background: url("../images/error_cloud.png") repeat-x scroll 0 0 transparent;
+    bottom: 0;
+    height: 170px;
+    position: absolute;
+    width: 100%;
+}

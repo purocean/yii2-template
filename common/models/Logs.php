@@ -69,4 +69,12 @@ class Logs extends \yii\db\ActiveRecord
 
         return $log->save(false);
     }
+
+    public static function getLastOne($userId = null, $model = null, $type = null)
+    {
+        return self::find()
+                ->filterWhere(['user_id' => $userId, 'model' => $model, 'type' => $type])
+                ->orderBy('id desc')
+                ->one();
+    }
 }

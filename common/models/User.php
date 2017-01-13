@@ -216,6 +216,11 @@ class User extends ActiveRecord implements IdentityInterface
         $this->access_token = Yii::$app->security->generateRandomString(64) . '+' . (time() + $expires);
     }
 
+    /**
+     * Get AccessToken
+     *
+     * @return string|null
+     */
     public function getAccessToken()
     {
         if ($this->access_token) {
@@ -231,5 +236,19 @@ class User extends ActiveRecord implements IdentityInterface
         }
 
         return null;
+    }
+
+    /**
+     * Finds all users by assignment role name
+     *
+     * @param  string $roleName
+     * @return static|null
+     */
+    public static function findByRoleName($roleName)
+    {
+        return static::find()
+            ->join('LEFT JOIN', 'auth_assignment', 'auth_assignment.user_id = id')
+            ->where(['auth_assignment.item_name' => $roleName])
+            ->all();
     }
 }

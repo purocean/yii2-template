@@ -1,0 +1,35 @@
+/* Base Application Styles */
+
+.pull-right {
+  float: right !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#nprogress .spinner-icon {
+  border-top-color: #fff;
+  border-left-color: #fff;
+}
+
+#nprogress .bar {
+  background: #fff;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #fff, 0 0 5px #fff;
+}
+
+.ant-btn-group .ant-btn-loading:not(:first-child) .anticon {
+  margin-left: 0;
+}
+
+#app .ant-menu-dark .ant-menu-item,
+#app .ant-menu-dark .ant-menu-item  > a {
+    color: #eee;
+}
+#app .ant-menu-dark .ant-menu-item-active,
+#app .ant-menu-dark .ant-menu-item-active > a {
+    color: #fff;
+}

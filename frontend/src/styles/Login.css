@@ -1,0 +1,22 @@
+.login .main {
+  width: 400px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.login .title {
+  position: relative;
+  bottom: 20px;
+  display: inline-block;
+}
+
+.login .switch {
+  float: right;
+  position: relative;
+  top: -1em;
+  right: -1em;
+}
+
+.login .qrlogin {
+  text-align: center;
+}

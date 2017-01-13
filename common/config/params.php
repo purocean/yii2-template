@@ -4,5 +4,9 @@ return [
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,
 
-    'siteName' => 'Yii2 Template',
+    'siteName' => '站点名称',
+    'roles' => [
+        'admin'           => '管理员',
+        'user'            => '普通用户',
+    ],
 ];

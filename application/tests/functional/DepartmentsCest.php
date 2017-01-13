@@ -44,6 +44,9 @@ class DepartmentsCest
         $I->dontSeeResponseMatchesJsonType(['status' => 'integer|string']);
     }
 
+    /**
+     * @skip
+     */
     public function sync(FunctionalTester $I)
     {
         $I->wantTo('ensure that sync api works');

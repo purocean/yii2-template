@@ -67,6 +67,9 @@ class UserCest
         $I->seeResponseContainsJson(['status' => 'ok']);
     }
 
+    /**
+     * @skip
+     */
     public function syncAndSendmsg(FunctionalTester $I)
     {
         $I->wantTo('ensure that sync & sendmsg api works');

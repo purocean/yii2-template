@@ -13,6 +13,7 @@ Yii2 应用模板，包含企业号同步联系人，扫码登录，使用蚂蚁
 安装
 -------------------
 ```bash
+# 仅测试 PHP7.0
 composer global require "fxp/composer-asset-plugin:^1.2.0"
 composer install --prefer-dist
 ./init

@@ -30,6 +30,7 @@ vim /common/config/params-local.php
 ./yii serve -t=@application/web # 运行开发服务器
 cd frontend
 npm install # 安装 nodejs 依赖
+vim /frontend/cfg/defaults.js # 修改本机后台服务器 IP 端口
 npm run serve # 运行开发服务器
 npm run dist # 前端打包
 ```

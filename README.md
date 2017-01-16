@@ -27,7 +27,7 @@ vim /common/config/main-local.php
 vim /common/config/params-local.php
 ./yii migrate # 迁移表结构
 ./yii rbac/reset-password suadmin <password> # 更改超级管理员密码
-./yii serve -t=@application/web # 运行开发服务器
+./yii serve 192.168.1.108:8080 -t=@application/web # 运行开发服务器，IP 为本机局域网 IP，以便手机访问
 cd frontend
 npm install # 安装 nodejs 依赖
 vim /frontend/cfg/defaults.js # 修改本机后台服务器 IP 端口

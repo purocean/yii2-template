@@ -12,11 +12,7 @@ class AppController extends \yii\web\Controller
     {
         if (Yii::$app->request->get('state') === 'WechatOAuth') { // 验证回调
             $code = Yii::$app->request->get('code');
-            if (YII_ENV == 'dev') {
-                return $this->redirect("http://192.168.1.108:8000/app.html#/login/{$code}?redirect=" . urlencode($redirect));
-            } else {
-                return $this->redirect("/app.html#/login/{$code}?redirect=" . urlencode($redirect));
-            }
+            return $this->redirect("/app.html#/login/{$code}?redirect=" . urlencode($redirect));
         } else {
             return $this->redirect(Yii::$app->qywx->wx->getJumpOAuthUrl(Yii::$app->request->getAbsoluteUrl()));
         }

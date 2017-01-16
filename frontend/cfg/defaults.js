@@ -6,12 +6,14 @@
  */
 'use strict';
 
+const localConfig = require('./local');
+
 const path = require('path');
 const srcPath = path.join(__dirname, '/../src');
-const dfltPort = 8000;
-const dfltHost = 'localhost';
-const dfltDevBackendHost = '192.168.1.108';
-const dfltDevBackendPort = '8087';
+const dfltPort = localConfig.devPort; // 前端服务器端口
+const dfltHost = localConfig.devHost; // 本机局域网的 IP，方便手机打开
+const dfltDevBackendHost = localConfig.devBackendHost; // 本机局域网的 IP，方便手机打开
+const dfltDevBackendPort = localConfig.devBackendPort; // 后端服务器端口
 
 /**
  * Get the default modules object for webpack

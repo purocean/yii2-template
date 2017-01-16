@@ -33,7 +33,7 @@ module.exports = {
       '/api/*': {
         target: `http://${defaultSettings.devBackendHost}:${defaultSettings.devBackendPort}`,
         pathRewrite: {
-          '/api' : ''
+          '/api' : '/index.php'
         }
       },
       '/files/*': {

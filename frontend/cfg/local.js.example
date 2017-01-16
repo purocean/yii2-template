@@ -1,0 +1,6 @@
+module.exports = {
+  devHost: '192.168.1.108', // 前端服务器端口
+  devPort: '8000', // 本机局域网的 IP，方便手机打开
+  devBackendHost: '192.168.1.108', // 本机局域网的 IP，方便手机打开
+  devBackendPort: '8080', // 后端服务器端口
+};

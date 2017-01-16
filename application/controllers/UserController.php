@@ -165,7 +165,6 @@ class UserController extends RestController
         // GET 方式获取 nonce 和 url
         $nonce =  base64_encode(openssl_random_pseudo_bytes(32));
         $url = Yii::$app->urlManager->createAbsoluteUrl('/app.html#/qrlogin/' . urlencode($nonce));
-        YII_ENV == 'dev' and $url = 'http://192.168.1.108:8000/app.html#/qrlogin/' . urlencode($nonce);
 
         return AjaxData::build('ok', '获取成功', [
             'nonce' => $nonce,

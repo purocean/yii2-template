@@ -30,7 +30,9 @@ vim /common/config/params-local.php
 ./yii serve 192.168.1.108:8080 -t=@application/web # 运行开发服务器，IP 为本机局域网 IP，以便手机访问
 cd frontend
 npm install # 安装 nodejs 依赖
-vim /frontend/cfg/defaults.js # 修改本机后台服务器 IP 端口
+# 修改本机后台服务器 IP 端口
+cp /frontend/cfg/local.js.example /frontend/cfg/local.js
+vim /frontend/cfg/local.js
 npm run serve # 运行开发服务器
 npm run dist # 前端打包
 ```

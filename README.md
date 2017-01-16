@@ -1,5 +1,10 @@
 Yii2 应用模板，包含企业号同步联系人，扫码登录，使用蚂蚁金服做前端 UI
 ===============================
+[![composer.lock](https://poser.pugx.org/purocean/yii2-template/composerlock)](https://packagist.org/packages/purocean/yii2-template)
+[![Build Status](https://travis-ci.org/purocean/yii2-template.svg?branch=master)](https://travis-ci.org/purocean/yii2-template)
+[![Latest Stable Version](https://poser.pugx.org/purocean/yii2-template/v/stable)](https://packagist.org/packages/purocean/yii2-template)
+[![Total Downloads](https://poser.pugx.org/purocean/yii2-template/downloads)](https://packagist.org/packages/purocean/yii2-template)
+[![License](https://poser.pugx.org/purocean/yii2-template/license)](https://packagist.org/packages/purocean/yii2-template)
 
 特性
 -------------------

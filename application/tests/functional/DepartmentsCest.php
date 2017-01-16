@@ -32,40 +32,35 @@ class DepartmentsCest
         $I->wantTo('ensure that index api works');
 
         // 我是其他人
-        $user = $I->grabRecord('application\models\User', ['username' => 'okirlin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('okirlin');
         $I->sendGET('/departments');
         $I->seeResponseMatchesJsonType(['status' => 'integer|string']);
 
         // 我是管理员
-        $user = $I->grabRecord('application\models\User', ['username' => 'admin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('admin');
         $I->sendGET('/departments');
         $I->dontSeeResponseMatchesJsonType(['status' => 'integer|string']);
     }
 
     /**
-     * @skip
+     * @group wechat
      */
     public function sync(FunctionalTester $I)
     {
         $I->wantTo('ensure that sync api works');
 
         // 我是其他人
-        $user = $I->grabRecord('application\models\User', ['username' => 'okirlin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('okirlin');
         $I->sendPOST('/departments/sync');
         $I->seeResponseContainsJson(['status' => 403]);
 
         // 我是管理员
-        $user = $I->grabRecord('application\models\User', ['username' => 'admin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('admin');
         $I->sendGET('/departments/sync');
         $I->seeResponseContainsJson(['status' => 405]); // 不允许 GET
 
         // 我是管理员
-        $user = $I->grabRecord('application\models\User', ['username' => 'admin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('admin');
         $I->sendPOST('/departments/sync');
         $I->seeResponseContainsJson(['status' => 'ok']);
     }

@@ -31,14 +31,12 @@ class UserCest
         $I->wantTo('ensure that index api works');
 
         // 我是其他人
-        $user = $I->grabRecord('application\models\User', ['username' => 'okirlin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('okirlin');
         $I->sendGET('/user');
         $I->seeResponseContainsJson(['status' => 403]);
 
         // 我是管理员
-        $user = $I->grabRecord('application\models\User', ['username' => 'admin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('admin');
         $I->sendGET('/user');
         $I->dontSeeResponseContainsJson(['status' => 403]);
     }
@@ -49,14 +47,12 @@ class UserCest
         $I->haveHttpHeader('Content-Type', 'application/json');
 
         // 我是其他人
-        $user = $I->grabRecord('application\models\User', ['username' => 'okirlin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('okirlin');
         $I->sendPOST('/user/save');
         $I->seeResponseContainsJson(['status' => 403]);
 
         // 我是管理员，GET
-        $user = $I->grabRecord('application\models\User', ['username' => 'admin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('admin');
         $I->sendGET('/user/save');
         $I->seeResponseContainsJson(['status' => 405]);
 
@@ -68,7 +64,7 @@ class UserCest
     }
 
     /**
-     * @skip
+     * @group wechat
      */
     public function syncAndSendmsg(FunctionalTester $I)
     {
@@ -76,14 +72,12 @@ class UserCest
         $I->haveHttpHeader('Content-Type', 'application/json');
 
         // 我是其他人
-        $user = $I->grabRecord('application\models\User', ['username' => 'okirlin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('okirlin');
         $I->sendPOST('/user/sync');
         $I->seeResponseContainsJson(['status' => 403]);
 
         // 我是管理员，GET
-        $user = $I->grabRecord('application\models\User', ['username' => 'admin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('admin');
         $I->sendGET('/user/sync');
         $I->seeResponseContainsJson(['status' => 405]);
 
@@ -92,14 +86,12 @@ class UserCest
 
         // 发消息
         // 我是其他人
-        $user = $I->grabRecord('application\models\User', ['username' => 'okirlin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('okirlin');
         $I->sendPOST('/user/sendmsg');
         $I->seeResponseContainsJson(['status' => 403]);
 
         // 我是管理员，GET
-        $user = $I->grabRecord('application\models\User', ['username' => 'admin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('admin');
         $I->sendGET('/user/sendmsg');
         $I->seeResponseContainsJson(['status' => 405]);
 
@@ -137,8 +129,7 @@ class UserCest
         $I->seeResponseContainsJson(['status' => 401]);
 
         // 我是管理员，GET
-        $user = $I->grabRecord('application\models\User', ['username' => 'admin']);
-        $I->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+        $I->am('admin');
         $I->sendGET('/user/logout');
         $I->seeResponseContainsJson(['status' => 405]);
 

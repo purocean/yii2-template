@@ -27,4 +27,4 @@ before_script:
 
 script:
   - composer validate --strict
-  - composer exec codecept run
+  - composer exec -- codecept run --skip-group=wechat

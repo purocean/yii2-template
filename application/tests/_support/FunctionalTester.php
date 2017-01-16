@@ -30,4 +30,10 @@ class FunctionalTester extends \Codeception\Actor
     {
         $this->dontSee($message, '.help-block');
     }
+
+    public function am($username)
+    {
+        $user = $this->grabRecord('application\models\User', ['username' => $username]);
+        $this->amBearerAuthenticated(explode('+', $user->access_token, 2)[0]);
+    }
 }

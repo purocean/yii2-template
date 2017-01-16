@@ -25,14 +25,14 @@ class m161221_121810_create_files_table extends Migration
             'title'      => $this->string()->notNull()->defaultValue('')->comment('标题'),
             'comment'    => $this->string()->notNull()->defaultValue('')->comment('备注'),
             'name'       => $this->string()->notNull()->comment('文件名'),
-            'path'       => $this->text()->notNull()->comment('文件路径'),
+            'path'       => $this->text()->comment('文件路径'),
             'hash'       => $this->string(32)->notNull()->comment('文件哈希'),
             'mime'       => $this->string()->notNull()->comment('文件类型'),
-            'size'       => $this->integer()->notNull()->comment('文件尺寸'),
+            'size'       => $this->integer()->notNull()->defaultValue(0)->comment('文件尺寸'),
 
             'status'     => $this->smallInteger()->notNull()->defaultValue(0),
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
+            'created_at' => $this->integer()->notNull()->defaultValue(0),
+            'updated_at' => $this->integer()->notNull()->defaultValue(0),
         ], $tableOptions);
     }
 

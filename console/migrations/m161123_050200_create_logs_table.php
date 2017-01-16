@@ -24,10 +24,10 @@ class m161123_050200_create_logs_table extends Migration
             'model'      => $this->string()->defaultValue('')->notNull()->comment('Log Model'),
             'type'      => $this->string()->defaultValue('')->notNull()->comment('Log type'),
 
-            'content'    => $this->text()->notNull()->defaultValue('')->comment('Log Content'),
+            'content'    => $this->text()->comment('Log Content'),
 
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
+            'created_at' => $this->integer()->notNull()->defaultValue(0),
+            'updated_at' => $this->integer()->notNull()->defaultValue(0),
         ], $tableOptions);
     }
 

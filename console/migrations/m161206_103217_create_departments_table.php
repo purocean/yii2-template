@@ -22,12 +22,12 @@ class m161206_103217_create_departments_table extends Migration
             'id'         => $this->primaryKey(),
 
             'name'       => $this->string()->notNull()->defaultValue('')->comment('名称'),
-            'parentid'   => $this->integer()->notNull()->defaultValue(0)->comment('父级ID'),
-            'order'      => $this->integer()->notNull()->defaultValue(0)->comment('排序'),
+            'parentid'   => $this->integer()->notNull()->defaultValue(0)->defaultValue(0)->comment('父级ID'),
+            'order'      => $this->integer()->notNull()->defaultValue(0)->defaultValue(0)->comment('排序'),
 
             'status'     => $this->smallInteger()->notNull()->defaultValue(0),
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
+            'created_at' => $this->integer()->notNull()->defaultValue(0),
+            'updated_at' => $this->integer()->notNull()->defaultValue(0),
         ], $tableOptions);
     }
 

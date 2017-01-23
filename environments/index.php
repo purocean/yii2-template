@@ -35,6 +35,9 @@ return [
             'application/runtime',
             'application/web/assets',
         ],
+        'setWritableRecursive' => [
+            'storage',
+        ],
         'setExecutable' => [
             'yii',
             'yii_test',
@@ -48,6 +51,9 @@ return [
         'setWritable' => [
             'application/runtime',
             'application/web/assets',
+        ],
+        'setWritableRecursive' => [
+            'storage',
         ],
         'setExecutable' => [
             'yii',

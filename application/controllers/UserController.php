@@ -5,11 +5,13 @@ namespace application\controllers;
 use Yii;
 use application\components\BaseController;
 use common\components\AjaxData;
+use common\models\LoginForm;
 use application\models\User;
 use application\models\UserSearch;
 use yii\web\Response;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
 
 /**
@@ -19,6 +21,17 @@ class UserController extends BaseController
 {
     public $resourceName = 'user';
 
+
+    public function checkAccess($action, $model = null, $params = [])
+    {
+        parent::checkAccess($action, $model, $params);
+
+        if (in_array($action, ['sync', 'sendmsg',])) {
+            if (!Yii::$app->user->can("/{$this->resourceName}/*")) {
+                throw new ForbiddenHttpException('无权访问资源');
+            }
+        }
+    }
 
     /**
      * @inheritdoc
@@ -30,6 +43,9 @@ class UserController extends BaseController
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'sync' => ['POST'],
+                    'sendmsg' => ['POST'],
+                    'codelogin' => ['POST'],
+                    'confirmlogin' => ['POST'],
                 ],
             ],
         ];
@@ -63,6 +79,7 @@ class UserController extends BaseController
 
     public function actionAssign($data = null)
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
         $data = json_decode(Yii::$app->request->getRawBody(), true);
 
         if ($user = User::findByUsername($data['username'])) {
@@ -92,6 +109,7 @@ class UserController extends BaseController
 
     public function actionSendmsg()
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
         $data = json_decode(Yii::$app->request->getRawBody(), true);
         if ($msg = trim($data['message'])) {
             if (User::sendMsg($data['username'], '管理员消息', $msg)) {
@@ -110,6 +128,7 @@ class UserController extends BaseController
      */
     public function actionQrlogin($nonce = null)
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
         if (Yii::$app->request->isPost and $nonce) {
             return self::Qrlogin($nonce);
         }
@@ -128,6 +147,7 @@ class UserController extends BaseController
      */
     public function actionCodelogin($code)
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
         $model = new LoginForm(['code' => $code]);
         $model->setScenario($model::SCENARIO_CODELOGIN);
         if ($model->login(true)) {
@@ -148,6 +168,7 @@ class UserController extends BaseController
      */
     public function actionConfirmlogin($nonce, $allow = null)
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
         if (!is_null($allow)) {
             if ($log = Logs::getLastOne(null, 'user', 'qrlogin_'.$nonce)) {
                 if ($allow = ($allow == '1')) {
@@ -181,6 +202,7 @@ class UserController extends BaseController
 
     public static function Qrlogin($nonce)
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
         $model = new LoginForm(['nonce' => $nonce]);
         $model->setScenario($model::SCENARIO_QRLOGIN);
         if ($model->login(true)) {

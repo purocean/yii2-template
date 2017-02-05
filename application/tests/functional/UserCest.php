@@ -26,42 +26,27 @@ class UserCest
         ]);
     }
 
-    public function index(FunctionalTester $I)
-    {
-        $I->wantTo('ensure that index api works');
+    // public function save(FunctionalTester $I)
+    // {
+    //     $I->wantTo('ensure that save api works');
+    //     $I->haveHttpHeader('Content-Type', 'application/json');
 
-        // 我是其他人
-        $I->am('okirlin');
-        $I->sendGET('/user');
-        $I->seeResponseContainsJson(['status' => 403]);
+    //     // 我是其他人
+    //     $I->am('okirlin');
+    //     $I->sendPOST('/user/save');
+    //     $I->seeResponseCodeIs(403);
 
-        // 我是管理员
-        $I->am('admin');
-        $I->sendGET('/user');
-        $I->dontSeeResponseContainsJson(['status' => 403]);
-    }
+    //     // 我是管理员，GET
+    //     $I->am('admin');
+    //     $I->sendGET('/user/save');
+    //     $I->seeResponseCodeIs(405);
 
-    public function save(FunctionalTester $I)
-    {
-        $I->wantTo('ensure that save api works');
-        $I->haveHttpHeader('Content-Type', 'application/json');
+    //     $I->sendPOST('/user/save', json_encode(['username' => 'notexist']));
+    //     $I->seeResponseContainsJson(['message' => '用户不存在']);
 
-        // 我是其他人
-        $I->am('okirlin');
-        $I->sendPOST('/user/save');
-        $I->seeResponseContainsJson(['status' => 403]);
-
-        // 我是管理员，GET
-        $I->am('admin');
-        $I->sendGET('/user/save');
-        $I->seeResponseContainsJson(['status' => 405]);
-
-        $I->sendPOST('/user/save', json_encode(['username' => 'notexist']));
-        $I->seeResponseContainsJson(['message' => '用户不存在']);
-
-        $I->sendPOST('/user/save', json_encode(['username' => 'okirlin', 'roles' => ['notexist']]));
-        $I->seeResponseContainsJson(['status' => 'ok']);
-    }
+    //     $I->sendPOST('/user/save', json_encode(['username' => 'okirlin', 'roles' => ['notexist']]));
+    //     $I->seeResponseContainsJson(['status' => 'ok']);
+    // }
 
     /**
      * @group wechat
@@ -74,12 +59,12 @@ class UserCest
         // 我是其他人
         $I->am('okirlin');
         $I->sendPOST('/user/sync');
-        $I->seeResponseContainsJson(['status' => 403]);
+        $I->seeResponseCodeIs(403);
 
         // 我是管理员，GET
         $I->am('admin');
         $I->sendGET('/user/sync');
-        $I->seeResponseContainsJson(['status' => 405]);
+        $I->seeResponseCodeIs(405);
 
         $I->sendPOST('/user/sync');
         $I->seeResponseContainsJson(['status' => 'ok']);
@@ -88,55 +73,18 @@ class UserCest
         // 我是其他人
         $I->am('okirlin');
         $I->sendPOST('/user/sendmsg');
-        $I->seeResponseContainsJson(['status' => 403]);
+        $I->seeResponseCodeIs(403);
 
         // 我是管理员，GET
         $I->am('admin');
         $I->sendGET('/user/sendmsg');
-        $I->seeResponseContainsJson(['status' => 405]);
+        $I->seeResponseCodeIs(405);
 
         $I->sendPOST('/user/sendmsg', ['username' => 'cscs', 'message' => '    ']);
         $I->seeResponseContainsJson(['message' => '消息内容不能为空']);
 
         $I->sendPOST('/user/sendmsg', ['username' => 'cscs', 'message' => '你好']);
         $I->seeResponseContainsJson(['status' => 'ok']);
-    }
-
-    public function login(FunctionalTester $I)
-    {
-        $I->wantTo('ensure that login api works');
-        $I->haveHttpHeader('Content-Type', 'application/json');
-
-        $I->sendGET('/user/login');
-        $I->seeResponseContainsJson(['status' => 405]);
-
-        $I->sendPOST('/user/login', json_encode(['username' => 'notexist', 'password' => 'notexist']));
-        $I->seeResponseContainsJson(['status' => 'error']);
-
-        $I->sendPOST('/user/login', json_encode(['username' => 'erau', 'password' => 'notexist']));
-        $I->seeResponseContainsJson(['status' => 'error']);
-
-        $I->sendPOST('/user/login', json_encode(['username' => 'erau', 'password' => 'password_0']));
-        $I->seeResponseContainsJson(['status' => 'ok']);
-    }
-
-    public function logout(FunctionalTester $I)
-    {
-        $I->wantTo('ensure that logout api works');
-        $I->haveHttpHeader('Content-Type', 'application/json');
-
-        $I->sendPOST('/user/logout');
-        $I->seeResponseContainsJson(['status' => 401]);
-
-        // 我是管理员，GET
-        $I->am('admin');
-        $I->sendGET('/user/logout');
-        $I->seeResponseContainsJson(['status' => 405]);
-
-        $I->sendPOST('/user/logout');
-        $I->seeResponseContainsJson(['status' => 'ok']);
-
-        $I->seeRecord('application\models\User', ['username' => 'admin', 'access_token' => null]);
     }
 
     public function qrlogin(FunctionalTester $I)

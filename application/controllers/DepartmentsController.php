@@ -10,6 +10,7 @@ use application\models\DepartmentsSearch;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
 
 /**
@@ -19,6 +20,17 @@ class DepartmentsController extends BaseController
 {
     public $resourceName = 'departments';
 
+
+    public function checkAccess($action, $model = null, $params = [])
+    {
+        parent::checkAccess($action, $model, $params);
+
+        if (in_array($action, ['sync'])) {
+            if (!Yii::$app->user->can("/{$this->resourceName}/*")) {
+                throw new ForbiddenHttpException('无权访问资源');
+            }
+        }
+    }
 
     /**
      * @inheritdoc

@@ -27,21 +27,6 @@ class DepartmentsCest
         $I->haveHttpHeader('Content-Type', 'application/json');
     }
 
-    public function index(FunctionalTester $I)
-    {
-        $I->wantTo('ensure that index api works');
-
-        // 我是其他人
-        $I->am('okirlin');
-        $I->sendGET('/departments');
-        $I->seeResponseMatchesJsonType(['status' => 'integer|string']);
-
-        // 我是管理员
-        $I->am('admin');
-        $I->sendGET('/departments');
-        $I->dontSeeResponseMatchesJsonType(['status' => 'integer|string']);
-    }
-
     /**
      * @group wechat
      */
@@ -52,12 +37,12 @@ class DepartmentsCest
         // 我是其他人
         $I->am('okirlin');
         $I->sendPOST('/departments/sync');
-        $I->seeResponseContainsJson(['status' => 403]);
+        $I->seeResponseCodeIs(403);
 
         // 我是管理员
         $I->am('admin');
         $I->sendGET('/departments/sync');
-        $I->seeResponseContainsJson(['status' => 405]); // 不允许 GET
+        $I->seeResponseCodeIs(405); // 不允许 GET
 
         // 我是管理员
         $I->am('admin');

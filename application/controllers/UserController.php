@@ -93,10 +93,10 @@ class UserController extends BaseController
         }
     }
 
-    public function actionAssign($data = null)
+    public function actionAssign()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
-        $data = json_decode(Yii::$app->request->getRawBody(), true);
+        $data = Yii::$app->request->post();
 
         if ($user = User::findByUsername($data['username'])) {
             $auth = Yii::$app->authManager;

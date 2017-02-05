@@ -23,6 +23,25 @@ class User extends \common\models\User
         return $fields;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => '用户名',
+            'nickname' => '昵称',
+            'name' => '名称',
+            'email' => '邮箱',
+            'mobile' => '手机号码',
+            'department_name' => '部门名称',
+            'status' => 'Status',
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
+        ];
+    }
+
     public function getRoles()
     {
         return array_keys(Yii::$app->authManager->getRolesByUser($this->id));

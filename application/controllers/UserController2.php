@@ -1,67 +1,75 @@
 <?php
-
 namespace application\controllers;
 
 use Yii;
-use application\components\BaseController;
-use common\components\AjaxData;
-use application\models\User;
-use application\models\UserSearch;
-use yii\web\Response;
-use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
 
-/**
- * UserController implements the CRUD actions for User model.
- */
+use application\components\BaseController;
+use common\components\AjaxData;
+use common\models\LoginForm;
+use application\models\User;
+use common\models\Logs;
+
 class UserController extends BaseController
 {
+    public $modelClass = 'application\models\User';
     public $resourceName = 'user';
 
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
+    public function checkAccess($action, $model = null, $params = [])
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'sync' => ['POST'],
-                ],
-            ],
-        ];
-    }
+        parent::checkAccess($action, $model, $params);
 
-    /**
-     * Lists all User models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'roles' => Yii::$app->params['roles'],
-        ]);
-    }
-
-    public function actionSync()
-    {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        if ($count = User::sync()) {
-            return AjaxData::build('ok', '已同步 ' . $count . ' 条数据');
-        } else {
-            return AjaxData::build('error', '同步失败');
+        if (in_array($action, ['sync', 'sendmsg', 'stuff'])) {
+            if (!Yii::$app->user->can('/user/*')) {
+                throw new ForbiddenHttpException('无权访问资源');
+            }
         }
     }
 
-    public function actionAssign($data = null)
+    public function behaviors()
+    {
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'save' => ['post'],
+                        'sync' => ['post'],
+                        'sendmsg' => ['post'],
+                        'codelogin' => ['post'],
+                        'confirmlogin' => ['post'],
+                    ],
+                ]
+            ]
+        );
+    }
+
+    public function actionIndex()
+    {
+        return $this->render('index');
+    }
+
+    public function actionList($key = null)
+    {
+        $modelName = $this->modelClass;
+        $query = $modelName::find()->orderBy('id desc');
+        if ($key) {
+            $query->filterWhere(['like', 'username', $key])
+                    ->orFilterWhere(['like', 'name', $key])
+                    ->orFilterWhere(['like', 'department_name', $key])
+                    ->orFilterWhere(['like', 'mobile', $key]);
+        }
+
+        return (new ActiveDataProvider([
+            'query' => $query,
+        ]))->getModels();
+    }
+
+    public function actionSave($data = null)
     {
         $data = json_decode(Yii::$app->request->getRawBody(), true);
 
@@ -87,6 +95,15 @@ class UserController extends BaseController
             }
         } else {
             return AjaxData::build('error', '用户不存在');
+        }
+    }
+
+    public function actionSync()
+    {
+        if ($count = User::sync()) {
+            return AjaxData::build('ok', '已同步 ' . $count . ' 条数据');
+        } else {
+            return AjaxData::build('error', '同步失败');
         }
     }
 
@@ -179,6 +196,35 @@ class UserController extends BaseController
         }
     }
 
+    public function actionItems()
+    {
+        $roles = [];
+        $permissions = array_keys(Yii::$app->authManager->getPermissionsByUser(Yii::$app->user->id));
+
+        foreach (array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id)) as $role) {
+            $roles[$role] = Yii::$app->params['roles'][$role] ?? '其他';
+        }
+
+        array_push($permissions, '/qrlogin/*');
+
+        return [
+            'roles' => $roles,
+            'permissions' => array_combine($permissions, $permissions),
+        ];
+    }
+
+    public function actionStuff()
+    {
+        return AjaxData::build('ok', '获取成功', [
+            'roles' => Yii::$app->params['roles'],
+        ]);
+    }
+
+    public function actionDelete($id)
+    {
+        throw new NotFoundHttpException();
+    }
+
     public static function Qrlogin($nonce)
     {
         $model = new LoginForm(['nonce' => $nonce]);
@@ -194,21 +240,5 @@ class UserController extends BaseController
         }
 
         return AjaxData::build('error', 'login failed', null, $model->errors);
-    }
-
-    /**
-     * Finds the User model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return User the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = User::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
     }
 }

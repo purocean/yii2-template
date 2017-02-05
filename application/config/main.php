@@ -42,12 +42,6 @@ return [
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            // 'enableStrictParsing' => true,
-            'showScriptName' => false,
-            'rules' => require(__DIR__ . '/route.php'),
-        ],
     ],
     'params' => $params,
 ];

@@ -19,7 +19,7 @@ class m161122_093526_add_column_to_user extends Migration
         $this->addColumn(
             '{{%user}}',
             'department',
-            $this->string()->after('mobile')->notNull()->defaultValue('')->comment('部门')
+            $this->integer()->after('mobile')->notNull()->defaultValue(0)->comment('部门')
         );
         $this->addColumn(
             '{{%user}}',

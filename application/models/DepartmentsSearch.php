@@ -18,7 +18,7 @@ class DepartmentsSearch extends Departments
     public function rules()
     {
         return [
-            [['id', 'parentid', 'order', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['id'], 'integer'],
             [['name'], 'safe'],
         ];
     }
@@ -60,11 +60,6 @@ class DepartmentsSearch extends Departments
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'parentid' => $this->parentid,
-            'order' => $this->order,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

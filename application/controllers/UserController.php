@@ -77,6 +77,22 @@ class UserController extends BaseController
         }
     }
 
+    public function actionSendmsg()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $data = Yii::$app->request->post();
+        if ($msg = trim($data['message'])) {
+            if (User::sendMsg($data['username'], '管理员消息', $msg)) {
+                return AjaxData::build('ok', '发送消息成功');
+            } else {
+                return AjaxData::build('error', '发送消息失败');
+            }
+
+        } else {
+            return AjaxData::build('error', '消息内容不能为空');
+        }
+    }
+
     public function actionAssign($data = null)
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -104,22 +120,6 @@ class UserController extends BaseController
             }
         } else {
             return AjaxData::build('error', '用户不存在');
-        }
-    }
-
-    public function actionSendmsg()
-    {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $data = json_decode(Yii::$app->request->getRawBody(), true);
-        if ($msg = trim($data['message'])) {
-            if (User::sendMsg($data['username'], '管理员消息', $msg)) {
-                return AjaxData::build('ok', '发送消息成功');
-            } else {
-                return AjaxData::build('error', '发送消息失败');
-            }
-
-        } else {
-            return AjaxData::build('error', '消息内容不能为空');
         }
     }
 

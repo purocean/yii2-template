@@ -54,6 +54,27 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 <?php Pjax::end(); ?></div>
 
+<form id="sendmsg-form">
+    <div class="modal fade" id="sendmsg-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">向 <b id="sendmsg-b"></b> 发送消息</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="username" />
+                    <textarea name="message" rows="3" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="sendmsg-send" class="btn btn-primary">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 <script>
 <?php $this->beginBlock('js') ?>
 
@@ -78,6 +99,39 @@ $(function () {
             alert('网络错误！');
         })
         .always(function() {
+        });
+
+        return false;
+    });
+
+    $(document).on('click', '.sendmsg', function(event) {
+        $('#sendmsg-modal').modal('show');
+        $('#sendmsg-form textarea[name=message]').val('');
+        $('#sendmsg-form input[name=username]').val($(this).data('username'));
+        $('#sendmsg-b').text($(this).data('username'));
+
+        return false;
+    });
+
+    $('#sendmsg-form').submit(function(event) {
+        $('#sendmsg-send').text('发送中……');
+        $.ajax({
+            url: '<?= Yii::$app->urlManager->createUrl('user/sendmsg') ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: $(this).serialize(),
+        })
+        .done(function(result) {
+            if (result.status === 'ok') {
+                $('#sendmsg-modal').modal('hide');
+            }
+            alert(result.message);
+        })
+        .fail(function() {
+            alert('网络错误！');
+        })
+        .always(function() {
+            $('#sendmsg-send').text('发送');
         });
 
         return false;

@@ -36,3 +36,11 @@ vim /common/config/test-local.php
 composer exec codecept build
 composer exec codecept run
 ```
+
+
+截图
+-------------------
+![login_1](./screenshots/login_1.png "账号密码登录")
+![login_2](./screenshots/login_2.png "二维码登录")
+![login_3](./screenshots/login_3.png "二维码登录")
+![user](./screenshots/user.png "用户管理")

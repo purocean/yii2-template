@@ -27,7 +27,7 @@ class UserController extends BaseController
     {
         parent::checkAccess($action, $model, $params);
 
-        if (in_array($action, ['sync', 'sendmsg',])) {
+        if (in_array($action, ['sync', 'sendmsg', 'assign'])) {
             if (!Yii::$app->user->can("/{$this->resourceName}/*")) {
                 throw new ForbiddenHttpException('无权访问资源');
             }
@@ -44,6 +44,7 @@ class UserController extends BaseController
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'sync' => ['POST'],
+                    'assign' => ['POST'],
                     'sendmsg' => ['POST'],
                     'codelogin' => ['POST'],
                     'confirmlogin' => ['POST'],

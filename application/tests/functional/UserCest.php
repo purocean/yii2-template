@@ -26,27 +26,26 @@ class UserCest
         ]);
     }
 
-    // public function save(FunctionalTester $I)
-    // {
-    //     $I->wantTo('ensure that save api works');
-    //     $I->haveHttpHeader('Content-Type', 'application/json');
+    public function assign(FunctionalTester $I)
+    {
+        $I->wantTo('ensure that assign api works');
 
-    //     // 我是其他人
-    //     $I->am('okirlin');
-    //     $I->sendPOST('/user/save');
-    //     $I->seeResponseCodeIs(403);
+        // 我是其他人
+        $I->am('okirlin');
+        $I->sendPOST('/user/assign');
+        $I->seeResponseCodeIs(403);
 
-    //     // 我是管理员，GET
-    //     $I->am('admin');
-    //     $I->sendGET('/user/save');
-    //     $I->seeResponseCodeIs(405);
+        // 我是管理员，GET
+        $I->am('admin');
+        $I->sendGET('/user/assign');
+        $I->seeResponseCodeIs(405);
 
-    //     $I->sendPOST('/user/save', json_encode(['username' => 'notexist']));
-    //     $I->seeResponseContainsJson(['message' => '用户不存在']);
+        $I->sendPOST('/user/assign', ['username' => 'notexist']);
+        $I->seeResponseContainsJson(['message' => '用户不存在']);
 
-    //     $I->sendPOST('/user/save', json_encode(['username' => 'okirlin', 'roles' => ['notexist']]));
-    //     $I->seeResponseContainsJson(['status' => 'ok']);
-    // }
+        $I->sendPOST('/user/assign', ['username' => 'okirlin', 'roles' => ['notexist']]);
+        $I->seeResponseContainsJson(['status' => 'ok']);
+    }
 
     /**
      * @group wechat
@@ -54,7 +53,6 @@ class UserCest
     public function syncAndSendmsg(FunctionalTester $I)
     {
         $I->wantTo('ensure that sync & sendmsg api works');
-        $I->haveHttpHeader('Content-Type', 'application/json');
 
         // 我是其他人
         $I->am('okirlin');
@@ -90,12 +88,14 @@ class UserCest
     public function qrlogin(FunctionalTester $I)
     {
         $I->wantTo('ensure that qrlogin api works');
-        $I->haveHttpHeader('Content-Type', 'application/json');
 
-        $I->sendPOST('/user/qrlogin?nonce='.urlencode('qrlogin_zSQ+hx3yLiwt+RBEcmeoOL+POJi/7+4VkeZFE9jW2P8='));
+        $I->sendPOST('/user/qrlogin');
+        $I->seeResponseContainsJson(['status' => 'ok']);
+
+        $I->sendPOST('/user/qrlogin', ['nonce' => 'zSQ+hx3yLiwt+RBEcmeoOL+POJi/7+4VkeZFE9jW2P8=']);
         $I->seeResponseContainsJson(['status' => 'error']);
 
-        $I->sendPOST('/user/qrlogin?nonce='.urlencode('zSQ+hx3yLiwt+RBEcmeoOL+POJi/7login'));
+        $I->sendPOST('/user/qrlogin', ['nonce' => 'zSQ+hx3yLiwt+RBEcmeoOL+POJi/7login']);
         $I->seeResponseContainsJson(['status' => 'ok']);
     }
 }

@@ -24,7 +24,6 @@ class DepartmentsCest
                 'dataFile' => codecept_data_dir() . 'departments.php'
             ],
         ]);
-        $I->haveHttpHeader('Content-Type', 'application/json');
     }
 
     /**

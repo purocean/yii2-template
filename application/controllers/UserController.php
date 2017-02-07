@@ -6,6 +6,7 @@ use Yii;
 use application\components\BaseController;
 use common\components\AjaxData;
 use common\models\LoginForm;
+use common\models\Logs;
 use application\models\User;
 use application\models\UserSearch;
 use yii\web\Response;
@@ -126,16 +127,16 @@ class UserController extends BaseController
     /**
      * 二维码 nonce 登录，GET 方法扫码地址和 nonce
      */
-    public function actionQrlogin($nonce = null)
+    public function actionQrlogin()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
-        if (Yii::$app->request->isPost and $nonce) {
+        if ($nonce = Yii::$app->request->post('nonce')) {
             return self::Qrlogin($nonce);
         }
 
         // GET 方式获取 nonce 和 url
         $nonce =  base64_encode(openssl_random_pseudo_bytes(32));
-        $url = Yii::$app->urlManager->createAbsoluteUrl('/app.html#/qrlogin/' . urlencode($nonce));
+        $url = Yii::$app->urlManager->createAbsoluteUrl(['mobile/qrlogin', 'nonce' => $nonce]);
 
         return AjaxData::build('ok', '获取成功', [
             'nonce' => $nonce,
@@ -143,60 +144,29 @@ class UserController extends BaseController
         ]);
     }
 
-    /* 微信回调 code 登录
-     */
-    public function actionCodelogin($code)
-    {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $model = new LoginForm(['code' => $code]);
-        $model->setScenario($model::SCENARIO_CODELOGIN);
-        if ($model->login(true)) {
-            $accessToken = explode('+', $model->user->access_token, 2);
-            return AjaxData::build('ok', 'login successed', [
-                'name' => $model->user->name,
-                'username' => $model->user->username,
-                'access_token' => $accessToken[0],
-                'expires' => (int) $accessToken[1]
-            ]);
-        }
-
-        return AjaxData::build('error', 'login failed', null, $model->errors);
-    }
-
     /**
      * 确认扫码登录
      */
-    public function actionConfirmlogin($nonce, $allow = null)
+    public function actionConfirmlogin($nonce, $allow)
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
-        if (!is_null($allow)) {
-            if ($log = Logs::getLastOne(null, 'user', 'qrlogin_'.$nonce)) {
-                if ($allow = ($allow == '1')) {
-                    $log->content = json_encode([
-                        'content' => '二维码登录',
-                        'isAllow' => $allow,
-                        'nonce' => $nonce,
-                        'username' => Yii::$app->user->identity->username,
-                    ]);
+        if ($log = Logs::getLastOne(null, 'user', 'qrlogin_'.$nonce)) {
+            if ($allow = ($allow == '1')) {
+                $log->content = json_encode([
+                    'content' => '二维码登录',
+                    'isAllow' => $allow,
+                    'nonce' => $nonce,
+                    'username' => Yii::$app->user->identity->username,
+                ]);
 
-                    $log->save();
+                $log->save();
 
-                    return AjaxData::build('ok', '登录成功');
-                } else {
-                    return AjaxData::build('error', '拒绝登录');
-                }
+                return AjaxData::build('ok', '登录成功');
             } else {
-                return AjaxData::build('error', '扫码失败');
+                return AjaxData::build('error', '拒绝登录');
             }
         } else {
-            Logs::add(Yii::$app->user->id, 'user', 'qrlogin_'.$nonce, [
-                'content' => '二维码登录',
-                'isAllow' => false,
-                'nonce' => $nonce,
-                'username' => Yii::$app->user->identity->username,
-            ]);
-
-            return AjaxData::build('ok', '扫码成功');
+            return AjaxData::build('error', '扫码失败');
         }
     }
 
@@ -205,13 +175,10 @@ class UserController extends BaseController
         Yii::$app->response->format = Response::FORMAT_JSON;
         $model = new LoginForm(['nonce' => $nonce]);
         $model->setScenario($model::SCENARIO_QRLOGIN);
-        if ($model->login(true)) {
-            $accessToken = explode('+', $model->user->access_token, 2);
+        if ($model->login()) {
             return AjaxData::build('ok', 'login successed', [
                 'name' => $model->user->name,
                 'username' => $model->user->username,
-                'access_token' => $accessToken[0],
-                'expires' => (int) $accessToken[1]
             ]);
         }
 

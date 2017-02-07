@@ -2,20 +2,28 @@
 namespace application\controllers;
 
 use Yii;
+use common\models\Logs;
+use application\components\MobileBaseController;
 
 /**
- * App controller
+ * Mobile controller
  */
-class AppController extends \yii\web\Controller
+class MobileController extends MobileBaseController
 {
-    public function actionAuth($redirect = '')
+    public function actionQrlogin($nonce)
     {
-        if (Yii::$app->request->get('state') === 'WechatOAuth') { // 验证回调
-            $code = Yii::$app->request->get('code');
-            return $this->redirect("/app.html#/login/{$code}?redirect=" . urlencode($redirect));
-        } else {
-            return $this->redirect(Yii::$app->qywx->wx->getJumpOAuthUrl(Yii::$app->request->getAbsoluteUrl()));
-        }
+        Logs::add(Yii::$app->user->id, 'user', 'qrlogin_'.$nonce, [
+            'content' => '二维码登录',
+            'isAllow' => false,
+            'nonce' => $nonce,
+            'username' => Yii::$app->user->identity->username,
+        ]);
+
+        return $this->render('qrlogin', [
+            'title' => '二维码登录',
+            'name' => Yii::$app->user->identity->name,
+            'nonce' => $nonce,
+        ]);
     }
 
     public function actionWxjs()

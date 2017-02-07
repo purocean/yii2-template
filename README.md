@@ -15,6 +15,8 @@ Yii2 应用模板，包含企业号同步联系人，扫码登录，使用蚂蚁
 + [x] 微信 jssdk
 + [x] RESTful
 
+若需要使用 jQuery 和 Bootstrap 开发前端，请使用 [传统模板](https://github.com/purocean/yii2-template/tree/classics)
+
 安装
 -------------------
 ```bash

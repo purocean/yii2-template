@@ -1,42 +1,95 @@
-﻿
-.err div {
-    margin: 0;
-    padding: 0;
+.err .box{
+  overflow: hidden;
 }
-.err #fulls {
-    position:  absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background: url("../images/error_bg.jpg") repeat-x scroll 0 0 #67ACE4;
+
+.err .container{
+  width: 50%;
+  height: 50%;
+  margin: 0px auto;
+  margin-top: 150px;
+  padding: 20px;
+  background: url("../images/cloud.png") no-repeat 0;
+  background-size: cover;;
 }
-.err #container {
-    margin: 0 auto;
-    padding-top: 50px;
-    text-align: center;
-    width: 560px;
+
+.err .containerbox{
+  margin: 20px auto;
+  width: 80%;
+  height: 80%;
 }
-.err #container img {
-    border: medium none;
-    margin-bottom: 50px;
+
+.err .img{
+  width: 40%;
+  height: 87%;
+  display: inline-block;
+  box-sizing: border-box;
+  padding-top: 20px;
+  padding-left: 10px;
+  vertical-align: top;
 }
-.err #container .error {
-    height: 200px;
-    position: relative;
+
+.err .png{
+  width: 100%;
+  height: 100%;
 }
-.err #container .error img {
-    bottom: -50px;
-    position: absolute;
-    right: -50px;
+
+.err .fontbox{
+  vertical-align: top;
+  display: inline-block;
+  width: 60%;
+  height: 100%;
+  padding-top: 10%;
+  padding-left: 15px;
+  padding-right: 10px;
+  padding-bottom: 20px;
 }
-.err #container .msg {
-    margin-bottom: 65px;
+
+.err .font{
+  width: 100%;
+  height: 40%;
+  display: inline-block;
+  box-sizing: border-box;
 }
-.err #cloud {
-    background: url("../images/error_cloud.png") repeat-x scroll 0 0 transparent;
-    bottom: 0;
-    height: 170px;
-    position: absolute;
+
+.err .fontstyle{
+  width: 80%;
+  padding-top: 5%;
+  color: #777777;
+  max-height: 80px;
+  min-height: 60px;
+  overflow: auto;
+  word-wrap:break-word;
+}
+
+.err .back{
+  margin-top: 1%;
+  width: 50%;
+  height: 25%;
+  text-align: center;
+  line-height: 28px;
+  color: #fff;
+  font-weight:500;
+  background-color: #99CCFF;
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .err .container{
     width: 100%;
+    height: 25%;
+    padding: 5px;
+    margin-top: 40%;
+  }
+  .err .fontstyle{
+    padding-top: 0;
+    max-height: 54px;
+    overflow: auto;
+  }
+  .err .fontbox{
+    padding-bottom: 0;
+  }
+  .err .back{
+    margin-top: 1%;
+    line-height: 18px;
+  }
 }

@@ -1,23 +1,37 @@
 import React from 'react';
-import { Link } from 'react-router';
 import '../styles/Error.css';
-
-import Png404 from '../images/404.png';
-import Png404Msg from '../images/404_msg.png';
-import Png404ToIndex from '../images/404_to_index.png';
+import Cry from '../images/cry.png';
+import Font from '../images/kaixiaochai.png';
 
 class Component extends React.Component {
+  static contextTypes = {
+    router: React.PropTypes.object.isRequired
+  };
+
+  constructor(props){
+    super(props);
+  }
+
   render() {
     return (
       <div className="err">
-        <div id="fulls">
-          <div id="container">
-            <img className="png" src={Png404} />
-            <img className="png msg" src={Png404Msg} />
-            <p><Link to="/"><img className="png" src={Png404ToIndex} /></Link></p>
+        <div className="box">
+          <div className="container">
+            <div className="containerbox">
+              <div className="img"><img className="png" src={Cry}/></div>
+              <div className="fontbox">
+                <div className="font"><img className="png" src={Font}/></div>
+                <div className="fontstyle">
+                  {this.props.location.query.code ? <b>{this.props.location.query.code}</b> : null}
+                  {this.props.location.query.detail ? <div>{this.props.location.query.detail}</div> : null}
+                </div>
+                <div className="back" onClick={() => {
+                    this.context.router.push('/');
+                }}>返回首页</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div id="cloud" className="png"></div>
       </div>
     );
   }

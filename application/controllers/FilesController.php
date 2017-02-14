@@ -5,8 +5,6 @@ use Yii;
 use yii\web\Controller;
 use yii\web\UploadedFile;
 use yii\web\Response;
-use yii\filters\auth\CompositeAuth;
-use yii\filters\auth\HttpBearerAuth;
 use yii\filters\VerbFilter;
 use application\models\Files;
 use common\components\AjaxData;
@@ -22,15 +20,6 @@ class FilesController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [
-                'authenticator' => [
-                    'class' => CompositeAuth::className(),
-                    'except' => ['options', 'index'],
-                    'authMethods' => [
-                        HttpBearerAuth::className(),
-                    ],
-                ],
-            ],
             [
                 'verbs' => [
                     'class' => VerbFilter::className(),

@@ -20,9 +20,9 @@ Yii2 应用模板，传统模板
 composer global require "fxp/composer-asset-plugin:^1.2.0"
 composer install --prefer-dist
 ./init
-vim /common/config/main.php
-vim /common/config/main-local.php
-vim /common/config/params-local.php
+vim ./common/config/main.php
+vim ./common/config/main-local.php
+vim ./common/config/params-local.php
 ./yii migrate # 迁移表结构
 ./yii rbac/reset-password suadmin <password> # 更改超级管理员密码
 ./yii serve 192.168.1.108:8080 -t=@application/web # 运行开发服务器，IP 为本机局域网 IP，以便手机访问
@@ -31,7 +31,7 @@ vim /common/config/params-local.php
 测试
 -------------------
 ```bash
-vim /common/config/test-local.php
+vim ./common/config/test-local.php
 ./yii_test migrate
 composer exec codecept build
 composer exec codecept run

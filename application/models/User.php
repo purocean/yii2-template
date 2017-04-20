@@ -62,15 +62,16 @@ class User extends \common\models\User
             'userid'
         );
 
-        $model = new self();
-        $members and self::deleteAll(['>', 'id', 99]);
-        $id = 100; // id 起始值
         foreach ($members as $user) {
-            $model->isNewRecord = true;
-            $model->id = ++$id;
+            // 只同步出新用户
+            if (self::find()->where(['username' => $user['userid']])->count() > 0) {
+                continue;
+            }
+
+            $model = new self;
             $model->username = $user['userid'];
             $model->nickname = $user['name'];
-            $model->email = (isset($user['email']) and $user['email']) ? $user['email'] : "{$id}@xx.com";
+            $model->email = (isset($user['email']) and $user['email']) ? $user['email'] : "{$user['userid']}@xx.com";
             $model->name = $user['name'];
             $model->mobile = isset($user['mobile']) ? $user['mobile'] : '';
             $model->department = implode(',', $user['department']);
